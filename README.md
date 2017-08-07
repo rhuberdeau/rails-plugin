@@ -14,7 +14,7 @@ And then execute:
 $ bundle
 ```
 
-Create `config/initializers/templarbit.rb` with the following content:
+Create `config/initializers/templarbit.rb` with the following content (you can find your API Key and Property ID on the Templarbit settings page):
 
 ```ruby
 Rails.configuration.templarbit = {
