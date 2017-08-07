@@ -1,0 +1,3 @@
+module Templarbit
+  # Your code goes here...
+end
