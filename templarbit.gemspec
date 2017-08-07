@@ -16,5 +16,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.1.2"
 
+  # TODO: we can probably remove this dep
   s.add_development_dependency "sqlite3"
 end
