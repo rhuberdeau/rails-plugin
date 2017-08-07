@@ -1,13 +1,13 @@
 language: ruby
 sudo: false
-
 rvm:
-  - 2.2
-
+- 2.2
 cache:
   bundler: true
-
-script:
-  make test
-
-
+script: make test
+deploy:
+  provider: rubygems
+  api_key:
+    secure: Lw6O9SXoHv83acVENWSrdO/yKWARr86v75VEUIQBHOLMnZWIa9/CSUxQapBANrACDkb0zEHmowyB8UWpBP9RkORSStEBsaFjUc8ekC/kzN9SaktWsBG7t5bhgaWxnSVba7rOyS8I1BcQ/I68mE8VxDzrEgsJFzT34fh9NYy1R31RADsx3griNjs5XqAwvFGsO5sDGdaJQSI2QTGA8ueI2318pMlLy9lhjJ4tYeVoBybCL93Hm+lUVd5P4YG8xs69RV3QeoD//4wnWq7HoSNWeWQk5CBVqm1KleSPUVfbZb5viNC2CNNS6Q7ruCnCBAa5fOchnsMTyGTwVvuZXDlBtcTKlUNoIlepRdo1ISinUMvQMEop06wbKTrCbg3lWPFUCMCrKQoaZV54+1qKIiD5wH0brcWqgpmewA4DwTw/kE16Z0E+QI5pCdxiCP0lT5pz5+Of/uU23f2d6QJk3VYG7qmsnF+MeslWg0e3FzZFpT466hMt0y16oktp6ChmmoPhgg48QTTVROtfJHgbwSB0ET0vOgVxlCeLCpsbs0WHPrFOUSaQtlbgx4B35VCxO1oK7GdAWMHOVgcTYe3qGpO/0taT6pqHgwqQyygUU5SVET+xQGpb1vspTAqRKI96oVhg4SOKj06JkcBsl6ZDTSN/NGsoUOrQKueF6d7HZJW0cMY=
+  on:
+    tags: true
