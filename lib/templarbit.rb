@@ -51,7 +51,7 @@ module Templarbit
           end
 
           # poll templarbit API for Content-Security-Policy
-          r = Net::HTTP.post URI(Templarbit.api_url), 
+          r = Net::HTTP.post URI(Templarbit.api_url + "/csp"), 
             {"property_id" => Templarbit.property_id,
              "token" => Templarbit.api_key}.to_json,
              "Content-Type" => "application/json"
