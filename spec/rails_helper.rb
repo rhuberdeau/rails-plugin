@@ -2,6 +2,8 @@
 
 ENV['RAILS_ENV'] ||= 'test'
 ENV["TB_POLL_INTERVAL"] = '0'
+ENV['TB_API_KEY'] = 'example_key'
+ENV['TB_PROPERTY_ID'] = 'example_property_id'
 
 require 'spec_helper'
 require File.expand_path("../../spec/dummy/config/environment.rb", __FILE__)
@@ -11,7 +13,6 @@ require "vcr"
 require 'webmock/rspec'
 
 WebMock.disable_net_connect!(allow_localhost: true)
-
 VCR.configure do |config|
   config.cassette_library_dir = "spec/cassettes"
   config.hook_into :webmock

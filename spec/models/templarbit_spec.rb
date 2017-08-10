@@ -14,7 +14,7 @@ module Templarbit
       it "csp_report is populated" do
         VCR.use_cassette("success") do
           response = rack.call({})
-          expect(rack.api.csp_report_only).to eq("default-src 'self'; script-src 'self'; object-src 'self'; base-uri 'none'; report-uri https://logs.templarbit.com/csp/#{ENV['PROPERTY_ID']}/reports;")
+          expect(rack.api.csp_report_only).to eq("default-src 'self'; script-src 'self'; object-src 'self'; base-uri 'none'; report-uri https://logs.templarbit.com/csp/example_property_id/reports;")
         end
       end
 

@@ -9,7 +9,7 @@ RSpec.describe "Dummy app", :type => :request do
 
     it "uses the templarbit gem" do
       VCR.use_cassette("request") do
-        header_string ="default-src 'self'; script-src 'self'; object-src 'self'; base-uri 'none'; report-uri https://logs.templarbit.com/csp/#{ENV['PROPERTY_ID']}/reports;"
+        header_string ="default-src 'self'; script-src 'self'; object-src 'self'; base-uri 'none'; report-uri https://logs.templarbit.com/csp/example_property_id/reports;"
 
         get '/hello'
         expect(response).to have_http_status(200)

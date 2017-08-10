@@ -21,11 +21,12 @@ module Templarbit
 
   class API
     attr_reader :csp, :csp_report_only
+    attr_accessor :called
 
     def initialize
       @csp = nil
       @csp_report_only = nil
-      call_api
+      @called = false
     end
 
     def return_if_missing_config
@@ -41,6 +42,7 @@ module Templarbit
     end
 
     def call_api
+      called = true
       return_if_missing_config
 
       Thread.new do
@@ -97,6 +99,7 @@ module Templarbit
 
     def call!(env)
       resp = @app.call(env)
+      @api.called ? nil : @api.call_api
 
       if @api.csp
         resp[1]["Content-Security-Policy"] = @api.csp
