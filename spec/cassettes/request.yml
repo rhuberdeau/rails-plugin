@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.templarbit.com/v1/csp
+    body:
+      encoding: UTF-8
+      string: '{"property_id":"<PROPERTY_ID>","token":"<API_KEY>"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Thu, 10 Aug 2017 04:38:15 GMT
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"bf4ae18431d2400fd58f0d71630922b1"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9283c957-5f2f-4fa4-8193-c2931d9ca9fe
+      X-Runtime:
+      - '0.005495'
+      Vary:
+      - Origin
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"csp":null,"csp_report_only":"default-src ''self''; script-src ''self'';
+        object-src ''self''; base-uri ''none''; report-uri https://logs.templarbit.com/csp/<PROPERTY_ID>/reports;"}'
+    http_version:
+  recorded_at: Thu, 10 Aug 2017 04:38:16 GMT
+recorded_with: VCR 3.0.3

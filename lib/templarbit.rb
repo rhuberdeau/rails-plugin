@@ -3,55 +3,50 @@ require 'uri'
 require 'json'
 
 module Templarbit
-  def self.api_key=(value)
-    @@api_key = value
+  mattr_accessor :api_key do
+    ENV["TB_API_KEY"]
   end
 
-  def self.property_id=(value)
-    @@property_id = value
+  mattr_accessor :property_id do
+    ENV["TB_PROPERTY_ID"]
   end
 
-  @@poll_interval = 15.seconds
-  @@api_url = "https://api.templarbit.com/v1"
-
-  private 
- 
-  def self.api_key
-    @@api_key
+  mattr_accessor :poll_interval do
+    ENV["TB_POLL_INTERVAL"] || 15
   end
 
-  def self.property_id
-    @@property_id
+  mattr_accessor :api_url do
+    ENV["TB_API_URL"] || "https://api.templarbit.com/v1"
   end
-
-  def self.poll_interval
-    @@poll_interval
-  end
-
-  def self.api_url
-    @@api_url
-  end
-
 
   class API
     attr_reader :csp, :csp_report_only
 
     def initialize
-      @csp = ""
-      @csp_report_only = ""
+      @csp = nil
+      @csp_report_only = nil
+      call_api
+    end
 
-      # start worker thread
+    def return_if_missing_config
+      if Templarbit.api_key.nil?
+        Rails.logger.warn "Templarbit: Missing api key"
+        return
+      end
+
+      if Templarbit.property_id.nil?
+        Rails.logger.warn "Templarbit: Missing property_id"
+        return
+      end
+    end
+
+    def call_api
+      return_if_missing_config
+
       Thread.new do
         loop do
-
-          if Rails.env.test?
-            @csp = "test"
-            @csp_report_only = "test_report_only"
-            break
-          end
-
           # poll templarbit API for Content-Security-Policy
-          r = Net::HTTP.post URI(Templarbit.api_url + "/csp"), 
+          r = Net::HTTP.post URI(Templarbit.api_url + "/csp"),
             {"property_id" => Templarbit.property_id,
              "token" => Templarbit.api_key}.to_json,
              "Content-Type" => "application/json"
@@ -66,10 +61,10 @@ module Templarbit
             begin
               body = JSON.parse(r.body)
 
-              if !body["error"].blank?
+              if body["error"]
                 Rails.logger.warn "Templarbit: #{body['error']}"
 
-              elsif body["csp"].blank? && body["csp_report_only"].blank?
+              elsif !body["csp"] && !body["csp_report_only"]
                 Rails.logger.warn "Templarbit: Fetch successful, but Content-Security-Policy was empty"
 
               else
@@ -81,15 +76,16 @@ module Templarbit
               Rails.logger.warn "Templarbit: Failed to parse API JSON response: #{e}"
             end
           end
-
-          # wait and then poll again
-          sleep Templarbit.poll_interval 
+          sleep Templarbit.poll_interval.to_i
         end
       end
+
     end
   end
 
   class Middleware
+    attr_reader :api
+
     def initialize(app)
       @app = app
       @api = Templarbit::API.new
@@ -102,12 +98,12 @@ module Templarbit
     def call!(env)
       resp = @app.call(env)
 
-      unless @api.csp.blank? 
-        resp[1]["Content-Security-Policy"] = @api.csp 
+      if @api.csp
+        resp[1]["Content-Security-Policy"] = @api.csp
       end
 
-      unless @api.csp_report_only.blank? 
-        resp[1]["Content-Security-Policy-Report-Only"] = @api.csp_report_only 
+      if @api.csp_report_only
+        resp[1]["Content-Security-Policy-Report-Only"] = @api.csp_report_only
       end
 
       return resp
@@ -119,5 +115,4 @@ module Templarbit
       app.middleware.use Templarbit::Middleware
     end
   end
-
 end

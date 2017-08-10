@@ -16,6 +16,13 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.0.0"
 
-  # TODO: we can probably remove this dep
+  # Need for dummy application
   s.add_development_dependency "sqlite3"
+
+  # Need for Travis
+  s.add_development_dependency "railties"
+
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "vcr"
+  s.add_development_dependency "webmock"
 end
