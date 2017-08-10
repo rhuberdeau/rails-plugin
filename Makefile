@@ -1,7 +1,7 @@
 test:
 	RAILS_ENV=test \
 	TB_API_KEY=example_key TB_PROPERTY_ID=example_property_id \
-	rake test
+	bundle exec rake -t
 
 # example: make release V=0.0.0
 release:
