@@ -16,13 +16,14 @@ $ bundle
 
 Create `config/initializers/templarbit.rb` with the following content (you can find your API Key and Property ID on the Templarbit settings page):
 
-```ruby
-Rails.configuration.templarbit = {
-  :api_key     => ENV['TB_API_KEY'],
-  :property_id => ENV['TB_PROPERTY_ID']
-}
-
-Templarbit.api_key = Rails.configuration.templarbit[:api_key]
-Templarbit.property_id = Rails.configuration.templarbit[:property_id]
+```
+Templarbit.api_key = ENV['TB_API_KEY']
+Templarbit.property_id = ENV['TB_PROPERTY_ID']
 ```
 
+In addition you can control the API end point and polling interval with the following environment variables:
+
+```
+ENV['TB_API_URL']
+ENV['TB_POLL_INTERVAL']
+```
